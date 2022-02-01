@@ -2,6 +2,7 @@ package com.lalorosas.retirementcalculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
@@ -20,8 +21,16 @@ class MainActivity : AppCompatActivity() {
             Crashes::class.java
         );
 
+        val future  = Crashes.hasCrashedInLastSession()
+        future.thenAccept {
+            if (it)
+            {
+                Toast.makeText(this, "sorry",Toast.LENGTH_LONG).show()
+            }
+        }
+
         calculateButton.setOnClickListener {
-            // Crashes.generateTestCrash()
+            Crashes.generateTestCrash()
             try {
                 val interestRate = interestEditText.text.toString().toFloat()
                 val currentAge = ageEditText.text.toString().toInt()
